@@ -21,4 +21,9 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TinyDrive.Application\TinyDrive.Application.csproj" />
+      <ProjectReference Include="..\TinyDrive.Infrastructure\TinyDrive.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

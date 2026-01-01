@@ -1,22 +1,12 @@
-﻿namespace TinyDrive.Domain.Nodes;
+﻿using TinyDrive.Domain.Abstract;
 
-public abstract class Node
+namespace TinyDrive.Domain.Nodes;
+
+public abstract class Node : Entity
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; init; }
 
-    public Guid? ParentId { get; private set; }
+    public Guid? ParentId { get; init; }
 
-    public string Name { get; private set; } = string.Empty;
-
-
-    protected Node()
-    {
-    }
-
-    protected Node(Guid id, Guid? parentId, string name)
-    {
-        Id = id;
-        ParentId = parentId;
-        Name = name;
-    }
+    public string Name { get; init; } = string.Empty;
 }
