@@ -1,12 +1,14 @@
 ﻿using MediatR;
 using TinyDrive.Application.Abstract;
+using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Domain.Nodes;
 using TinyDrive.Domain.Nodes.Events;
 
 namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
 
 internal sealed class
-    GetFileUploadUrlCommandHandler : IRequestHandler<GetFileUploadUrlCommand, Result<FileUploadUrlResponse>>
+    GetFileUploadUrlCommandHandler(IApplicationDbContext dbContext)
+    : IRequestHandler<GetFileUploadUrlCommand, Result<FileUploadUrlResponse>>
 {
     public async Task<Result<FileUploadUrlResponse>> Handle(GetFileUploadUrlCommand request,
         CancellationToken cancellationToken)
@@ -22,6 +24,10 @@ internal sealed class
         };
 
         file.Raise(new FileCreatedDomainEvent(file.Id, file.Name));
+
+        dbContext.Nodes.Add(file);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result.Success(new FileUploadUrlResponse
         {

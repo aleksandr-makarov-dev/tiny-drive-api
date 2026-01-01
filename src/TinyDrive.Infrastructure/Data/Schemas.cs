@@ -1,4 +1,4 @@
-﻿namespace TinyDrive.Infrastructure.Database;
+﻿namespace TinyDrive.Infrastructure.Data;
 
 public static class Schemas
 {

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Domain.Nodes;
 
-namespace TinyDrive.Infrastructure.Database;
+namespace TinyDrive.Infrastructure.Data;
 
-public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : DbContext(options), IApplicationDbContext
 {
     public DbSet<Node> Nodes { get; set; }
 

@@ -14,7 +14,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\TinyDrive.Application\TinyDrive.Application.csproj" />
       <ProjectReference Include="..\TinyDrive.Domain\TinyDrive.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Repositories\" />
     </ItemGroup>
 
 </Project>

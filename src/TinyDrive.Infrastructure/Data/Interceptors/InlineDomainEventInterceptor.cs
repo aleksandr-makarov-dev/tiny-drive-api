@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using TinyDrive.Domain.Abstract;
 
-namespace TinyDrive.Infrastructure.Database.Interceptors;
+namespace TinyDrive.Infrastructure.Data.Interceptors;
 
 internal sealed class InlineDomainEventInterceptor(IPublisher publisher) : SaveChangesInterceptor
 {

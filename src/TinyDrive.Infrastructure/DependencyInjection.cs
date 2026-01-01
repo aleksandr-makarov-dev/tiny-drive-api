@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TinyDrive.Infrastructure.Database;
-using TinyDrive.Infrastructure.Database.Interceptors;
+using TinyDrive.Application.Abstract.Data;
+using TinyDrive.Infrastructure.Data;
+using TinyDrive.Infrastructure.Data.Interceptors;
 
 namespace TinyDrive.Infrastructure;
 
@@ -20,6 +21,8 @@ public static class DependencyInjection
                 .AddInterceptors(provider.GetRequiredService<InlineDomainEventInterceptor>())
                 .UseSnakeCaseNamingConvention();
         });
+
+        services.AddScoped<IApplicationDbContext>((provider) => provider.GetRequiredService<ApplicationDbContext>());
 
         return services;
     }

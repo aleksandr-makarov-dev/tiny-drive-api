@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TinyDrive.Domain.Nodes;
 
-namespace TinyDrive.Infrastructure.Database.Configurations;
+namespace TinyDrive.Infrastructure.Data.Configurations;
 
 internal sealed class NodeConfiguration : IEntityTypeConfiguration<Node>
 {
