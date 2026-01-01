@@ -1,0 +1,7 @@
+﻿services:
+  tinydrive.api:
+    image: tinydrive.api
+    build:
+      context: .
+      dockerfile: src/TinyDrive.API/Dockerfile
+
