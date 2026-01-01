@@ -7,6 +7,6 @@ internal sealed class FileCreatedDomainEventHandler : INotificationHandler<FileC
 {
     public Task Handle(FileCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }
