@@ -1,20 +1,20 @@
 ﻿using MediatR;
 using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data;
+using TinyDrive.Application.Abstract.Storage;
+using TinyDrive.Application.Abstract.Storage.Models;
 using TinyDrive.Domain.Nodes;
 using TinyDrive.Domain.Nodes.Events;
 
 namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
 
 internal sealed class
-    GetFileUploadUrlCommandHandler(IApplicationDbContext dbContext)
+    GetFileUploadUrlCommandHandler(IApplicationDbContext dbContext, IObjectStorage objectStorage)
     : IRequestHandler<GetFileUploadUrlCommand, Result<FileUploadUrlResponse>>
 {
     public async Task<Result<FileUploadUrlResponse>> Handle(GetFileUploadUrlCommand request,
         CancellationToken cancellationToken)
     {
-        await Task.Delay(50, cancellationToken);
-
         var file = new FileNode
         {
             Id = Guid.NewGuid(),
@@ -29,11 +29,17 @@ internal sealed class
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        string key = $"{file.Id}{Path.GetExtension(request.FileName)}";
+
+        PresignedPostData response =
+            await objectStorage.CreatePresignedPostAsync(key, file.Size, file.ContentType);
+
+
         return Result.Success(new FileUploadUrlResponse
         {
-            Url = "https://example.com/upload-file",
-            CreatedOnUtc = DateTime.UtcNow,
-            ExpiresOnUtc = DateTime.UtcNow.AddMinutes(30)
+            Url = response.Url,
+            Fields = response.Fields,
+            ExpiresOnUtc = response.ExpiresOnUtc,
         });
     }
 }

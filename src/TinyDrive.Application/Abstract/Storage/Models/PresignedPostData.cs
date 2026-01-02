@@ -1,6 +1,6 @@
-﻿namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
+﻿namespace TinyDrive.Application.Abstract.Storage.Models;
 
-public sealed class FileUploadUrlResponse
+public sealed class PresignedPostData
 {
     public string Url { get; init; }
 
