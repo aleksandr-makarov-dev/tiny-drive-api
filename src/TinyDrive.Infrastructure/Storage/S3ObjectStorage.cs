@@ -1,6 +1,8 @@
-﻿using Amazon.S3;
+﻿using System.Net;
+using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.Configuration;
+using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Application.Abstract.Storage.Models;
 
@@ -8,6 +10,8 @@ namespace TinyDrive.Infrastructure.Storage;
 
 internal sealed class S3ObjectStorage(IAmazonS3 s3Client, IConfiguration configuration) : IObjectStorage
 {
+    private readonly string? _bucketName = configuration["ObjectStorage:BucketName"];
+
     public async Task<PresignedPostData> CreatePresignedPostAsync(string key, long size,
         string contentType)
     {
@@ -15,7 +19,7 @@ internal sealed class S3ObjectStorage(IAmazonS3 s3Client, IConfiguration configu
 
         var request = new CreatePresignedPostRequest
         {
-            BucketName = configuration["ObjectStorage:BucketName"],
+            BucketName = _bucketName,
             Key = key,
             Expires = expiresOnUtc,
             Conditions =
@@ -32,6 +36,28 @@ internal sealed class S3ObjectStorage(IAmazonS3 s3Client, IConfiguration configu
             Url = result.Url,
             Fields = result.Fields,
             ExpiresOnUtc = expiresOnUtc
+        };
+    }
+
+    public async Task<ObjectAttributesData> GetObjectStatsAsync(string key)
+    {
+        var request = new GetObjectAttributesRequest
+        {
+            BucketName = _bucketName,
+            Key = key,
+            ObjectAttributes =
+            [
+                ObjectAttributes.ObjectSize,
+                ObjectAttributes.ETag
+            ]
+        };
+
+        GetObjectAttributesResponse? result = await s3Client.GetObjectAttributesAsync(request);
+
+        return new ObjectAttributesData
+        {
+            ETag = result.ETag,
+            ObjectSize = result.ObjectSize
         };
     }
 }

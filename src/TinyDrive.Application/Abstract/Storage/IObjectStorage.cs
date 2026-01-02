@@ -5,4 +5,6 @@ namespace TinyDrive.Application.Abstract.Storage;
 public interface IObjectStorage
 {
     Task<PresignedPostData> CreatePresignedPostAsync(string key, long fileSize, string contentType);
+    
+    Task<ObjectAttributesData> GetObjectStatsAsync(string key);
 }

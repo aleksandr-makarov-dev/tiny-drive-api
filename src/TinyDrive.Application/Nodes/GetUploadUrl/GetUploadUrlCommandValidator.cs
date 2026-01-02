@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
+namespace TinyDrive.Application.Nodes.GetUploadUrl;
 
-public class GetFileUploadUrlCommandValidator : AbstractValidator<GetFileUploadUrlCommand>
+public class GetUploadUrlCommandValidator : AbstractValidator<GetUploadUrlCommand>
 {
-    public GetFileUploadUrlCommandValidator()
+    public GetUploadUrlCommandValidator()
     {
         RuleFor(x => x.FileName)
             .NotEmpty()
