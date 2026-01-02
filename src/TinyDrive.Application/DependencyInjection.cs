@@ -11,11 +11,12 @@ public static class DependencyInjection
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
-
             config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
         });
 
-        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
+
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true,
+            lifetime: ServiceLifetime.Transient);
 
         return services;
     }
