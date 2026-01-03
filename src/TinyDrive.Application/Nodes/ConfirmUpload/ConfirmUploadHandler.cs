@@ -19,9 +19,8 @@ internal sealed class ConfirmUploadHandler(
         ConfirmUploadCommand request,
         CancellationToken cancellationToken)
     {
-        FileNode? file = await dbContext
+        Node? file = await dbContext
             .Nodes
-            .OfType<FileNode>()
             .FirstOrDefaultAsync(
                 x => x.Id == request.Id,
                 cancellationToken: cancellationToken);

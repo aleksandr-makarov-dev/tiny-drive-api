@@ -4,6 +4,7 @@ using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Application.Abstract.Storage.Models;
+using TinyDrive.Application.Abstract.Time;
 using TinyDrive.Domain.Nodes;
 
 namespace TinyDrive.Application.Nodes.GetUploadUrl;
@@ -12,6 +13,7 @@ internal sealed class
     GetUploadUrlCommandHandler(
         IApplicationDbContext dbContext,
         IObjectStorage objectStorage,
+        IDateTimeProvider dateTimeProvider,
         ILogger<GetUploadUrlCommandHandler> logger)
     : IRequestHandler<GetUploadUrlCommand, Result<UploadUrlResponse>>
 {
@@ -19,13 +21,15 @@ internal sealed class
         GetUploadUrlCommand request,
         CancellationToken cancellationToken)
     {
-        var file = new FileNode
+        var file = new Node
         {
             Id = Guid.NewGuid(),
             Name = request.FileName,
             Size = request.FileSize,
             ContentType = request.ContentType,
-            UploadStatus = NodeUploadStatus.Uploading
+            Type = NodeType.File,
+            UploadStatus = NodeUploadStatus.Uploading,
+            CreatedAtUtc = dateTimeProvider.UtcNow
         };
 
         dbContext.Nodes.Add(file);
@@ -34,18 +38,21 @@ internal sealed class
         try
         {
             string key = $"{file.Id}{Path.GetExtension(request.FileName)}";
+            DateTime expiresAtUtc = dateTimeProvider.UtcNow.AddMinutes(15);
 
             PresignedPostData response =
                 await objectStorage.CreatePresignedPostAsync(
                     key,
-                    file.Size,
-                    file.ContentType);
+                    request.FileSize,
+                    request.ContentType,
+                    expiresAtUtc);
 
             return Result.Success(new UploadUrlResponse
             {
+                Id = file.Id,
                 Url = response.Url,
                 Fields = response.Fields,
-                ExpiresOnUtc = response.ExpiresOnUtc,
+                ExpiresAtUtc = response.ExpiresAtUtc,
             });
         }
         catch (Exception ex)

@@ -22,9 +22,11 @@ public partial class Add_Node : Migration
                 id = table.Column<Guid>(type: "uuid", nullable: false),
                 parent_id = table.Column<Guid>(type: "uuid", nullable: true),
                 name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                content_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                size = table.Column<long>(type: "bigint", nullable: false),
                 type = table.Column<int>(type: "integer", nullable: false),
-                content_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                size = table.Column<long>(type: "bigint", nullable: true)
+                upload_status = table.Column<int>(type: "integer", nullable: false),
+                created_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
             },
             constraints: table =>
             {

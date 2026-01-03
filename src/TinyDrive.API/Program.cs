@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Serilog;
 using TinyDrive.API.Extensions;
 using TinyDrive.API.Infrastructure;
@@ -31,10 +32,16 @@ builder.Services.AddProblemDetails(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => policy
+        .WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
+});
 
 WebApplication app = builder.Build();
-
-app.MapEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,5 +53,9 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+app.MapEndpoints();
 
 await app.RunAsync();

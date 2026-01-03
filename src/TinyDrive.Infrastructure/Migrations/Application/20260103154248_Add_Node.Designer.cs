@@ -12,7 +12,7 @@ using TinyDrive.Infrastructure.Data;
 namespace TinyDrive.Infrastructure.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260101192049_Add_Node")]
+    [Migration("20260103154248_Add_Node")]
     partial class Add_Node
     {
         /// <inheritdoc />
@@ -33,6 +33,16 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("content_type");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at_utc");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -43,46 +53,22 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnType("uuid")
                         .HasColumnName("parent_id");
 
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint")
+                        .HasColumnName("size");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer")
                         .HasColumnName("type");
+
+                    b.Property<int>("UploadStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("upload_status");
 
                     b.HasKey("Id")
                         .HasName("pk_nodes");
 
                     b.ToTable("nodes", "public");
-
-                    b.HasDiscriminator<int>("Type");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("TinyDrive.Domain.Nodes.FileNode", b =>
-                {
-                    b.HasBaseType("TinyDrive.Domain.Nodes.Node");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("content_type");
-
-                    b.Property<long>("Size")
-                        .HasColumnType("bigint")
-                        .HasColumnName("size");
-
-                    b.ToTable("nodes", "public");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("TinyDrive.Domain.Nodes.FolderNode", b =>
-                {
-                    b.HasBaseType("TinyDrive.Domain.Nodes.Node");
-
-                    b.ToTable("nodes", "public");
-
-                    b.HasDiscriminator().HasValue(2);
                 });
 #pragma warning restore 612, 618
         }

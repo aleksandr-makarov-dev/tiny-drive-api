@@ -16,8 +16,11 @@ internal sealed class NodeConfiguration : IEntityTypeConfiguration<Node>
             .IsRequired()
             .HasMaxLength(255);
 
-        builder.HasDiscriminator<NodeType>("Type")
-            .HasValue<FileNode>(NodeType.File)
-            .HasValue<FolderNode>(NodeType.Folder);
+        builder.Property(x => x.ContentType)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(x => x.Size)
+            .IsRequired();
     }
 }

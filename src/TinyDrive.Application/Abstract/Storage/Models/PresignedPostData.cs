@@ -6,5 +6,5 @@ public sealed class PresignedPostData
 
     public Dictionary<string, string> Fields { get; init; } = new();
 
-    public DateTime ExpiresOnUtc { get; init; }
+    public DateTime ExpiresAtUtc { get; init; }
 }

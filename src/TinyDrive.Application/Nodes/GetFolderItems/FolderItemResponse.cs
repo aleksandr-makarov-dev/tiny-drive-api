@@ -1,11 +1,11 @@
-﻿using TinyDrive.Domain.Abstract;
+﻿using TinyDrive.Domain.Nodes;
 
-namespace TinyDrive.Domain.Nodes;
+namespace TinyDrive.Application.Nodes.GetFolderItems;
 
-public class Node : Entity
+public sealed class FolderItemResponse
 {
-    public Guid? ParentId { get; init; }
-
+    public Guid Id { get; init; }
+    
     public string Name { get; init; } = string.Empty;
 
     public string ContentType { get; init; } = string.Empty;
@@ -13,8 +13,6 @@ public class Node : Entity
     public long Size { get; init; }
 
     public NodeType Type { get; init; }
-
-    public NodeUploadStatus UploadStatus { get; set; }
 
     public DateTime CreatedAtUtc { get; init; }
 }

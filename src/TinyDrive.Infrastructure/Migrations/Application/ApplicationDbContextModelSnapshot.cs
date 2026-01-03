@@ -30,6 +30,16 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("content_type");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at_utc");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -39,6 +49,10 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid")
                         .HasColumnName("parent_id");
+
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint")
+                        .HasColumnName("size");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -52,38 +66,6 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasName("pk_nodes");
 
                     b.ToTable("nodes", "public");
-
-                    b.HasDiscriminator<int>("Type");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("TinyDrive.Domain.Nodes.FileNode", b =>
-                {
-                    b.HasBaseType("TinyDrive.Domain.Nodes.Node");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("content_type");
-
-                    b.Property<long>("Size")
-                        .HasColumnType("bigint")
-                        .HasColumnName("size");
-
-                    b.ToTable("nodes", "public");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("TinyDrive.Domain.Nodes.FolderNode", b =>
-                {
-                    b.HasBaseType("TinyDrive.Domain.Nodes.Node");
-
-                    b.ToTable("nodes", "public");
-
-                    b.HasDiscriminator().HasValue(2);
                 });
 #pragma warning restore 612, 618
         }

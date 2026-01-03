@@ -13,15 +13,13 @@ internal sealed class S3ObjectStorage(IAmazonS3 s3Client, IConfiguration configu
     private readonly string? _bucketName = configuration["ObjectStorage:BucketName"];
 
     public async Task<PresignedPostData> CreatePresignedPostAsync(string key, long size,
-        string contentType)
+        string contentType, DateTime expiresAtUtc)
     {
-        DateTime expiresOnUtc = DateTime.UtcNow.AddMinutes(15);
-
         var request = new CreatePresignedPostRequest
         {
             BucketName = _bucketName,
             Key = key,
-            Expires = expiresOnUtc,
+            Expires = expiresAtUtc,
             Conditions =
             [
                 new ContentLengthRangeCondition(1, size + 10_240),
@@ -35,7 +33,7 @@ internal sealed class S3ObjectStorage(IAmazonS3 s3Client, IConfiguration configu
         {
             Url = result.Url,
             Fields = result.Fields,
-            ExpiresOnUtc = expiresOnUtc
+            ExpiresAtUtc = expiresAtUtc
         };
     }
 

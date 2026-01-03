@@ -5,9 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Storage;
+using TinyDrive.Application.Abstract.Time;
 using TinyDrive.Infrastructure.Data;
 using TinyDrive.Infrastructure.Data.Interceptors;
 using TinyDrive.Infrastructure.Storage;
+using TinyDrive.Infrastructure.Time;
 
 namespace TinyDrive.Infrastructure;
 
@@ -15,6 +17,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        
         services.AddSingleton<InlineDomainEventInterceptor>();
 
         services.AddDbContext<ApplicationDbContext>((provider, options) =>

@@ -8,6 +8,8 @@ public abstract class Entity
 
     public List<INotification> DomainEvents => [.._domainEvents];
 
+    public Guid Id { get; init; }
+
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();
