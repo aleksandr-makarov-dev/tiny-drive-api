@@ -5,9 +5,11 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>85383a31-08f1-492f-bd50-c4499cef623c</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.22"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
           <PrivateAssets>all</PrivateAssets>
