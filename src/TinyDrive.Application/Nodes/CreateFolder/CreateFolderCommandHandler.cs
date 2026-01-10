@@ -27,7 +27,7 @@ internal sealed class CreateFolderCommandHandler(
                 logger.LogWarning("Parent node not found.");
 
                 return Result.Failure<Ulid>(Error.NotFound("Nodes.NotFound",
-                    $"The parent with id = {request.ParentId} was not found."));
+                    $"The parent with id '{request.ParentId}' was not found."));
             }
 
             if (!parent.IsFolder)
@@ -35,7 +35,7 @@ internal sealed class CreateFolderCommandHandler(
                 logger.LogWarning("Parent is not a folder.");
 
                 return Result.Failure<Ulid>(Error.Conflict("Nodes.ParentMustBeFolder",
-                    $"The parent with id = {request.ParentId} is not a folder."));
+                    $"The parent with id '{request.ParentId}' is not a folder."));
             }
         }
 
@@ -46,7 +46,7 @@ internal sealed class CreateFolderCommandHandler(
             logger.LogWarning("Duplicate folder {FolderName}.", request.Name);
 
             return Result.Failure<Ulid>(Error.Conflict("Nodes.Duplicate",
-                $"The folder with name = {request.Name} already exists in parent folder."));
+                $"The folder with name '{request.Name}' already exists in parent folder."));
         }
 
         var node = Node.NewFolder(request.Name, dateTimeProvider.UtcNow, request.ParentId);

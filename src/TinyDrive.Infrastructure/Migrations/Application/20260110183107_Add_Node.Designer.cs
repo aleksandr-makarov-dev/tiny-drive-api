@@ -12,8 +12,8 @@ using TinyDrive.Infrastructure.Data;
 namespace TinyDrive.Infrastructure.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260109210414_Initial")]
-    partial class Initial
+    [Migration("20260110183107_Add_Node")]
+    partial class Add_Node
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,7 +42,6 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnName("created_at_utc");
 
                     b.Property<string>("Extension")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("extension");
@@ -73,8 +72,9 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                     b.HasKey("Id")
                         .HasName("pk_nodes");
 
-                    b.HasIndex("ParentId")
-                        .HasDatabaseName("ix_nodes_parent_id");
+                    b.HasIndex("ParentId", "Name", "Extension")
+                        .IsUnique()
+                        .HasDatabaseName("ix_nodes_parent_id_name_extension");
 
                     b.ToTable("nodes", "public");
                 });

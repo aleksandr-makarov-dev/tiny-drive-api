@@ -5,7 +5,7 @@ namespace TinyDrive.Domain.Nodes;
 public sealed class Node : Entity
 {
     public string Name { get; init; }
-    public string Extension { get; init; }
+    public string? Extension { get; init; }
     public string? ContentType { get; init; }
     public long? Size { get; init; }
     public Ulid? ParentId { get; init; }
@@ -34,6 +34,7 @@ public sealed class Node : Entity
     {
         Id = Ulid.NewUlid(),
         Name = name,
+        Size = 0,
         ParentId = parentId,
         IsFolder = true,
         CreatedAtUtc = createdAtUtc,

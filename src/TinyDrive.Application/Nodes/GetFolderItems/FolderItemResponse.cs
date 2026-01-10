@@ -6,7 +6,7 @@ public sealed class FolderItemResponse
     
     public string Name { get; init; }
     
-    public string Extension { get; init; }
+    public string? Extension { get; init; }
     
     public string? ContentType { get; init; }
     

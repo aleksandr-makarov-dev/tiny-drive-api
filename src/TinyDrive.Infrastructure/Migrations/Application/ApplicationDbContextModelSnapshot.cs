@@ -39,7 +39,6 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnName("created_at_utc");
 
                     b.Property<string>("Extension")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("extension");

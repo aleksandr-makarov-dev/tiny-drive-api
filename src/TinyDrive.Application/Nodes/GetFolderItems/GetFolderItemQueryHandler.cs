@@ -26,7 +26,7 @@ internal sealed class GetFolderItemQueryHandler(
                 logger.LogWarning("Parent node not found.");
 
                 return Result.Failure<PagedResult<FolderItemResponse>>(Error.NotFound("Nodes.NotFound",
-                    $"The parent with id = {request.ParentId} was not found."));
+                    $"The parent with id '{request.ParentId}' was not found."));
             }
 
             if (!parent.IsFolder)
@@ -34,7 +34,7 @@ internal sealed class GetFolderItemQueryHandler(
                 logger.LogWarning("Parent is not a folder.");
 
                 return Result.Failure<PagedResult<FolderItemResponse>>(Error.Conflict("Nodes.ParentMustBeFolder",
-                    $"The parent with id = {request.ParentId} is not a folder."));
+                    $"The parent with id '{request.ParentId}' is not a folder."));
             }
         }
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TinyDrive.Infrastructure.Migrations.Application;
 
 /// <inheritdoc />
-public partial class Initial : Migration
+public partial class Add_Node : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ public partial class Initial : Migration
             {
                 id = table.Column<byte[]>(type: "bytea", nullable: false),
                 name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                extension = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                extension = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                 content_type = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                 size = table.Column<long>(type: "bigint", nullable: false),
                 parent_id = table.Column<byte[]>(type: "bytea", nullable: true),
@@ -42,10 +42,11 @@ public partial class Initial : Migration
             });
 
         migrationBuilder.CreateIndex(
-            name: "ix_nodes_parent_id",
+            name: "ix_nodes_parent_id_name_extension",
             schema: "public",
             table: "nodes",
-            column: "parent_id");
+            columns: new[] { "parent_id", "name", "extension" },
+            unique: true);
     }
 
     /// <inheritdoc />

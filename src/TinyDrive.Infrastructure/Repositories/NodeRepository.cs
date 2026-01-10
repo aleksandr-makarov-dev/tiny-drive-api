@@ -31,8 +31,8 @@ internal sealed class NodeRepository(ApplicationDbContext dbContext) : INodeRepo
         return dbContext.Nodes
             .AsNoTracking()
             .FirstOrDefaultAsync(x =>
-                    x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
-                    && x.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase)
+                    x.Name == name
+                    && x.Extension == extension
                     && x.ParentId == parentId,
                 cancellationToken: cancellationToken);
     }
@@ -43,7 +43,8 @@ internal sealed class NodeRepository(ApplicationDbContext dbContext) : INodeRepo
         return dbContext.Nodes
             .AsNoTracking()
             .Where(x => x.ParentId == parentId)
-            .OrderBy(x => x.Id)
+            .OrderBy(x => x.IsFolder)
+            .ThenBy(x => x.Id)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
@@ -51,8 +52,8 @@ internal sealed class NodeRepository(ApplicationDbContext dbContext) : INodeRepo
         CancellationToken cancellationToken = default)
     {
         return dbContext.Nodes.AnyAsync(x =>
-                x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)
-                && x.Extension.Equals(extension, StringComparison.OrdinalIgnoreCase)
+                x.Name == name
+                && x.Extension == extension
                 && x.ParentId == parentId,
             cancellationToken: cancellationToken);
     }
