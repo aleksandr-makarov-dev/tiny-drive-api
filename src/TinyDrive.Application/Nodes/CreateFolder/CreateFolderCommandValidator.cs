@@ -8,6 +8,8 @@ internal sealed class CreateFolderCommandValidator : AbstractValidator<CreateFol
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .MaximumLength(255);
+            .MaximumLength(255)
+            .Matches(@"^[^\\/:\*\?""<>|]+$")
+            .WithMessage("Folder name contains invalid characters.");
     }
 }
