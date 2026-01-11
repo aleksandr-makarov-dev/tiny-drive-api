@@ -1,4 +1,4 @@
-﻿namespace TinyDrive.Application.Abstract;
+﻿namespace TinyDrive.Domain.Abstract;
 
 public record Error
 {

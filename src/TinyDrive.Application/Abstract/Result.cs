@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using TinyDrive.Domain.Abstract;
 
 namespace TinyDrive.Application.Abstract;
 

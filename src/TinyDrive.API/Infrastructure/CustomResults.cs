@@ -1,4 +1,5 @@
 ﻿using TinyDrive.Application.Abstract;
+using TinyDrive.Domain.Abstract;
 
 namespace TinyDrive.API.Infrastructure;
 

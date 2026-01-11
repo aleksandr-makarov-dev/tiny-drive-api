@@ -5,6 +5,7 @@ using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Data.Repositories;
 using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Application.Abstract.Storage.Models;
+using TinyDrive.Domain.Abstract;
 using TinyDrive.Domain.Nodes;
 
 namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
@@ -31,16 +32,14 @@ internal sealed class
             {
                 logger.LogWarning("Parent node not found.");
 
-                return Result.Failure<FileUploadUrlResponse>(Error.NotFound("Nodes.NotFound",
-                    $"The parent with id '{request.ParentId}' was not found."));
+                return Result.Failure<FileUploadUrlResponse>(NodeErrors.ParentNotFound(request.ParentId.Value));
             }
 
             if (!parent.IsFolder)
             {
                 logger.LogWarning("Parent is not a folder.");
 
-                return Result.Failure<FileUploadUrlResponse>(Error.Conflict("Nodes.ParentMustBeFolder",
-                    $"The parent with id '{request.ParentId}' is not a folder."));
+                return Result.Failure<FileUploadUrlResponse>(NodeErrors.ParentMustBeFolder(request.ParentId.Value));
             }
         }
 
@@ -53,14 +52,14 @@ internal sealed class
         );
 
         // TODO: It might be better to check only among successfully uploaded files.
-        bool isDuplicate = await nodeRepository.ExistsAsync(file.Name, file.Extension, file.ParentId, cancellationToken);
-        
+        bool isDuplicate =
+            await nodeRepository.ExistsAsync(file.Name, file.Extension, file.ParentId, cancellationToken);
+
         if (isDuplicate)
         {
             logger.LogWarning("Duplicate folder {FolderName}.", file.FullName);
 
-            return Result.Failure<FileUploadUrlResponse>(Error.Conflict("Nodes.Duplicate",
-                $"The file with name '{file.FullName}' already exists in parent folder."));
+            return Result.Failure<FileUploadUrlResponse>(NodeErrors.Duplicate(file.FullName, request.ParentId));
         }
 
         try

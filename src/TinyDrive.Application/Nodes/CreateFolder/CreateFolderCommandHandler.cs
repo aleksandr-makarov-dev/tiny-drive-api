@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Data.Repositories;
+using TinyDrive.Domain.Abstract;
 using TinyDrive.Domain.Nodes;
 
 namespace TinyDrive.Application.Nodes.CreateFolder;
@@ -26,16 +27,14 @@ internal sealed class CreateFolderCommandHandler(
             {
                 logger.LogWarning("Parent node not found.");
 
-                return Result.Failure<Ulid>(Error.NotFound("Nodes.NotFound",
-                    $"The parent with id '{request.ParentId}' was not found."));
+                return Result.Failure<Ulid>(NodeErrors.ParentNotFound(request.ParentId.Value));
             }
 
             if (!parent.IsFolder)
             {
                 logger.LogWarning("Parent is not a folder.");
 
-                return Result.Failure<Ulid>(Error.Conflict("Nodes.ParentMustBeFolder",
-                    $"The parent with id '{request.ParentId}' is not a folder."));
+                return Result.Failure<Ulid>(NodeErrors.ParentMustBeFolder(request.ParentId.Value));
             }
         }
 
@@ -45,8 +44,7 @@ internal sealed class CreateFolderCommandHandler(
         {
             logger.LogWarning("Duplicate folder {FolderName}.", request.Name);
 
-            return Result.Failure<Ulid>(Error.Conflict("Nodes.Duplicate",
-                $"The folder with name '{request.Name}' already exists in parent folder."));
+            return Result.Failure<Ulid>(NodeErrors.Duplicate(request.Name, request.ParentId));
         }
 
         var node = Node.NewFolder(request.Name, dateTimeProvider.UtcNow, request.ParentId);

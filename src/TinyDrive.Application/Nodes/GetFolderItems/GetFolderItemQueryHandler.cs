@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data.Repositories;
+using TinyDrive.Domain.Abstract;
 using TinyDrive.Domain.Nodes;
 
 namespace TinyDrive.Application.Nodes.GetFolderItems;
@@ -25,16 +26,16 @@ internal sealed class GetFolderItemQueryHandler(
             {
                 logger.LogWarning("Parent node not found.");
 
-                return Result.Failure<PagedResult<FolderItemResponse>>(Error.NotFound("Nodes.NotFound",
-                    $"The parent with id '{request.ParentId}' was not found."));
+                return Result.Failure<PagedResult<FolderItemResponse>>(
+                    NodeErrors.ParentNotFound(request.ParentId.Value));
             }
 
             if (!parent.IsFolder)
             {
                 logger.LogWarning("Parent is not a folder.");
 
-                return Result.Failure<PagedResult<FolderItemResponse>>(Error.Conflict("Nodes.ParentMustBeFolder",
-                    $"The parent with id '{request.ParentId}' is not a folder."));
+                return Result.Failure<PagedResult<FolderItemResponse>>(
+                    NodeErrors.ParentMustBeFolder(request.ParentId.Value));
             }
         }
 
