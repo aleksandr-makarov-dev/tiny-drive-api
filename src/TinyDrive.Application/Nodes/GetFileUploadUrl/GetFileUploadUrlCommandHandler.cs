@@ -57,15 +57,15 @@ internal sealed class
 
         if (isDuplicate)
         {
-            logger.LogWarning("Duplicate folder {FolderName}.", file.FullName);
+            logger.LogWarning("Duplicate folder {FolderName}.", file.DisplayName);
 
-            return Result.Failure<FileUploadUrlResponse>(NodeErrors.Duplicate(file.FullName, request.ParentId));
+            return Result.Failure<FileUploadUrlResponse>(NodeErrors.Duplicate(file.DisplayName, request.ParentId));
         }
 
         try
         {
             PresignedPostUrlData presignedUrlDate = await objectStorage.GetPresignedPostUrlAsync(
-                file.Id.ToString(),
+                file.ObjectKey,
                 file.Size,
                 file.ContentType!,
                 cancellationToken
@@ -91,8 +91,7 @@ internal sealed class
         {
             logger.LogError(e, "Failed to create upload URL for file {FileName}", request.Name);
 
-            return Result.Failure<FileUploadUrlResponse>(Error.Failure("Nodes.UploadUrlFailed",
-                "Failed to create upload URL."));
+            return Result.Failure<FileUploadUrlResponse>(ObjectStorageErrors.UploadUrlCreationFailed());
         }
     }
 }

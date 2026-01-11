@@ -6,4 +6,6 @@ public interface IObjectStorage
 {
     Task<PresignedPostUrlData> GetPresignedPostUrlAsync(string key, long size, string contentType,
         CancellationToken cancellationToken = default);
+
+    Task<ObjectMetaData> GetObjectMetaDataAsync(string key, CancellationToken cancellationToken = default);
 }

@@ -17,7 +17,8 @@ public sealed class Node : Entity
     public DateTime CreatedAtUtc { get; init; }
     public DateTime? LastModifiedAtUtc { get; init; }
 
-    public string FullName => Extension is null or "" ? Name : $"{Name}.{Extension}";
+    public string DisplayName => string.IsNullOrEmpty(Extension) ? Name : $"{Name}.{Extension}";
+    public string ObjectKey => string.IsNullOrEmpty(Extension) ? Name : $"{Id}.{Extension}";
 
     private Node()
     {

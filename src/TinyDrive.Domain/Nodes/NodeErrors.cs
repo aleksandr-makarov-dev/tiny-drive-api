@@ -23,7 +23,7 @@ public static class NodeErrors
         Error.Conflict(
             "nodes.not_a_folder",
             $"The item with id '{nodeId}' is not a folder.");
-    
+
     public static Error ParentMustBeFolder(Ulid nodeId) =>
         Error.Conflict(
             "nodes.parent_not_a_folder",

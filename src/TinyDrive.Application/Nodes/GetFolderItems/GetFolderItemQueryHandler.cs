@@ -52,7 +52,7 @@ internal sealed class GetFolderItemQueryHandler(
         return new FolderItemResponse
         {
             Id = item.Id,
-            Name = item.FullName,
+            Name = item.DisplayName,
             ParentId = item.ParentId,
             Extension = item.Extension,
             IsFolder = item.IsFolder,

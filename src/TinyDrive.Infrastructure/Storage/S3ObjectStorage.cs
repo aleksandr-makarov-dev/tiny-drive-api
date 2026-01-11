@@ -43,4 +43,22 @@ internal sealed class S3ObjectStorage(
 
         return presignedPostUrlData;
     }
+
+    public async Task<ObjectMetaData> GetObjectMetaDataAsync(string key, CancellationToken cancellationToken = default)
+    {
+        var request = new GetObjectMetadataRequest
+        {
+            BucketName = _bucketName,
+            Key = key
+        };
+
+        GetObjectMetadataResponse response = await s3Client.GetObjectMetadataAsync(request, cancellationToken);
+
+        return new ObjectMetaData
+        {
+            ContentType = response.Headers.ContentType,
+            ContentLength = response.Headers.ContentLength,
+            LastModifiedAtUtc = response.LastModified
+        };
+    }
 }
