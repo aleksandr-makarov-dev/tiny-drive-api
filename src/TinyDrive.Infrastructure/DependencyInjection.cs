@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Amazon.S3;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Data.Repositories;
+using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Infrastructure.Data;
 using TinyDrive.Infrastructure.Data.Interceptors;
 using TinyDrive.Infrastructure.Repositories;
+using TinyDrive.Infrastructure.Storage;
 using TinyDrive.Infrastructure.Time;
 using TinyDrive.SharedKernel;
 
@@ -38,5 +41,19 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork>((provider) => provider.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<INodeRepository, NodeRepository>();
+
+        services.AddSingleton<IAmazonS3>(_ =>
+        {
+            var config = new AmazonS3Config
+            {
+                ServiceURL = configuration["ObjectStorage:Endpoint"],
+                ForcePathStyle = true
+            };
+
+            return new AmazonS3Client(configuration["ObjectStorage:AccessKey"],
+                configuration["ObjectStorage:SecretKey"], config);
+        });
+
+        services.AddScoped<IObjectStorage, S3ObjectStorage>();
     }
 }

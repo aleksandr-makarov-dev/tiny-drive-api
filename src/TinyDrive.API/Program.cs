@@ -1,11 +1,11 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TinyDrive.API.Extensions;
 using TinyDrive.API.Infrastructure;
 using TinyDrive.Application;
 using TinyDrive.Infrastructure;
 using TinyDrive.Infrastructure.Data;
-using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -49,10 +49,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
+    
     IServiceScope scope = app.Services.CreateScope();
     ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    
+
     await dbContext.Database.MigrateAsync();
 }
 

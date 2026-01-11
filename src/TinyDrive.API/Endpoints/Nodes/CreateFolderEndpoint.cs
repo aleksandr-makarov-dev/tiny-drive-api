@@ -9,7 +9,7 @@ namespace TinyDrive.API.Endpoints.Nodes;
 
 internal sealed class CreateFolderEndpoint : IEndpoint
 {
-    private class Request
+    private sealed class CreateFolderRequest
     {
         public string Name { get; init; }
 
@@ -18,7 +18,7 @@ internal sealed class CreateFolderEndpoint : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder builder)
     {
-        builder.MapPost("api/nodes/create-folder", async ([FromBody] Request request, ISender sender) =>
+        builder.MapPost("api/nodes/create-folder", async ([FromBody] CreateFolderRequest request, ISender sender) =>
         {
             var command = new CreateFolderCommand(request.Name, request.ParentId);
 

@@ -12,12 +12,11 @@ internal sealed class NodeRepository(ApplicationDbContext dbContext) : INodeRepo
         dbContext.Nodes.Add(node);
     }
 
-    /// <summary>
-    /// Finds a node by Id without tracking.
-    /// </summary>
-    /// <param name="id">Node Id.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>The node or null if not found.</returns>
+    public void Update(Node node)
+    {
+        dbContext.Nodes.Update(node);
+    }
+
     public Task<Node?> FindByIdAsync(Ulid id, CancellationToken cancellationToken = default)
     {
         return dbContext.Nodes

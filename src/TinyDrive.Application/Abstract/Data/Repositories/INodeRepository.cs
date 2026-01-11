@@ -6,6 +6,8 @@ public interface INodeRepository
 {
     void Add(Node node);
 
+    void Update(Node node);
+
     Task<Node?> FindByIdAsync(Ulid id, CancellationToken cancellationToken = default);
 
     Task<Node?> FindByAsync(string name, string? extension = null, Ulid? parentId = null,
@@ -15,6 +17,6 @@ public interface INodeRepository
 
     Task<bool> ExistsAsync(string name, string? extension = null, Ulid? parentId = null,
         CancellationToken cancellationToken = default);
-    
+
     Task<bool> ExistsByIdAsync(Ulid id, CancellationToken cancellationToken = default);
 }

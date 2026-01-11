@@ -51,7 +51,7 @@ internal sealed class GetFolderItemQueryHandler(
         return new FolderItemResponse
         {
             Id = item.Id,
-            Name = item.Name,
+            Name = item.FullName,
             ParentId = item.ParentId,
             Extension = item.Extension,
             IsFolder = item.IsFolder,

@@ -61,10 +61,13 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnType("bytea")
                         .HasColumnName("parent_id");
 
-                    b.Property<long?>("Size")
-                        .IsRequired()
+                    b.Property<long>("Size")
                         .HasColumnType("bigint")
                         .HasColumnName("size");
+
+                    b.Property<int>("UploadStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("upload_status");
 
                     b.HasKey("Id")
                         .HasName("pk_nodes");
