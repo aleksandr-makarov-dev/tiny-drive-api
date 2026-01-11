@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Data.Repositories;
 using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Application.Abstract.Storage.Models;
 using TinyDrive.Domain.Nodes;
-using TinyDrive.SharedKernel;
 
 namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
 

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace TinyDrive.SharedKernel;
+namespace TinyDrive.Application.Abstract;
 
 public class Result
 {

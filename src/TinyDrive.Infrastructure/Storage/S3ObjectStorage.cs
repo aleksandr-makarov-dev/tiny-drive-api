@@ -1,9 +1,9 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.Configuration;
+using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Application.Abstract.Storage.Models;
-using TinyDrive.SharedKernel;
 
 namespace TinyDrive.Infrastructure.Storage;
 

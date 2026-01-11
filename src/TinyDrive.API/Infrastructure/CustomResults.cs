@@ -1,4 +1,4 @@
-﻿using TinyDrive.SharedKernel;
+﻿using TinyDrive.Application.Abstract;
 
 namespace TinyDrive.API.Infrastructure;
 

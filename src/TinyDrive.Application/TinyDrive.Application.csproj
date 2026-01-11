@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TinyDrive.Domain\TinyDrive.Domain.csproj" />
-      <ProjectReference Include="..\TinyDrive.SharedKernel\TinyDrive.SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>

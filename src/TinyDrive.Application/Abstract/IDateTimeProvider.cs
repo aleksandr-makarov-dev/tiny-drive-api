@@ -1,4 +1,4 @@
-﻿namespace TinyDrive.SharedKernel;
+﻿namespace TinyDrive.Application.Abstract;
 
 public interface IDateTimeProvider
 {

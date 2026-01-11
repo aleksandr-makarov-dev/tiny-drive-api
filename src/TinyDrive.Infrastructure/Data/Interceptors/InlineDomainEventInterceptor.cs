@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using TinyDrive.SharedKernel;
+using TinyDrive.Domain.Abstract;
 
 namespace TinyDrive.Infrastructure.Data.Interceptors;
 

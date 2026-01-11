@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Data.Repositories;
 using TinyDrive.Application.Abstract.Storage;
@@ -11,7 +12,6 @@ using TinyDrive.Infrastructure.Data.Interceptors;
 using TinyDrive.Infrastructure.Repositories;
 using TinyDrive.Infrastructure.Storage;
 using TinyDrive.Infrastructure.Time;
-using TinyDrive.SharedKernel;
 
 namespace TinyDrive.Infrastructure;
 

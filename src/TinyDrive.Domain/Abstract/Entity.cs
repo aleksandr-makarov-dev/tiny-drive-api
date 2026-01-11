@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace TinyDrive.SharedKernel;
+namespace TinyDrive.Domain.Abstract;
 
 public abstract class Entity
 {
@@ -8,7 +8,7 @@ public abstract class Entity
 
     public List<INotification> DomainEvents => [.._domainEvents];
 
-    public Ulid Id { get; init; }
+    public Ulid Id { get; protected init; }
 
     public void ClearDomainEvents()
     {

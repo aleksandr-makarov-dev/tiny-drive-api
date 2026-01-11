@@ -1,4 +1,4 @@
-﻿using TinyDrive.SharedKernel;
+﻿using TinyDrive.Domain.Abstract;
 
 namespace TinyDrive.Domain.Nodes;
 

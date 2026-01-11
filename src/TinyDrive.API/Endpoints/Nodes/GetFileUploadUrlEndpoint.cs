@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using TinyDrive.API.Extensions;
 using TinyDrive.API.Infrastructure;
+using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Nodes.GetFileUploadUrl;
-using TinyDrive.SharedKernel;
 
 namespace TinyDrive.API.Endpoints.Nodes;
 
 internal sealed class GetFileUploadUrlEndpoint : IEndpoint
 {
-    private sealed class GetFileUploadUrlRequest
+    private sealed class Request
     {
         public string Name { get; init; }
 
@@ -22,7 +22,7 @@ internal sealed class GetFileUploadUrlEndpoint : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder builder)
     {
-        builder.MapPost("api/nodes/upload-url", async ([FromBody] GetFileUploadUrlRequest request, ISender sender) =>
+        builder.MapPost("api/nodes/upload-url", async ([FromBody] Request request, ISender sender) =>
         {
             var command = new GetFileUploadUrlCommand(
                 request.Name,
