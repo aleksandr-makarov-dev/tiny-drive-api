@@ -54,7 +54,6 @@ internal sealed class GetFolderItemQueryHandler(
             Id = item.Id,
             Name = item.DisplayName,
             ParentId = item.ParentId,
-            Extension = item.Extension,
             IsFolder = item.IsFolder,
             ContentType = item.ContentType,
             Size = item.Size,

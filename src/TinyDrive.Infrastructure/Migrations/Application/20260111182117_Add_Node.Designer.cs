@@ -12,7 +12,7 @@ using TinyDrive.Infrastructure.Data;
 namespace TinyDrive.Infrastructure.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260110231428_Add_Node")]
+    [Migration("20260111182117_Add_Node")]
     partial class Add_Node
     {
         /// <inheritdoc />
@@ -68,7 +68,7 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnType("bigint")
                         .HasColumnName("size");
 
-                    b.Property<int>("UploadStatus")
+                    b.Property<int?>("UploadStatus")
                         .HasColumnType("integer")
                         .HasColumnName("upload_status");
 

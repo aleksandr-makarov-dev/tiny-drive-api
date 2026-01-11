@@ -28,9 +28,6 @@ internal sealed class NodeConfiguration : IEntityTypeConfiguration<Node>
         builder.Property(x => x.IsFolder)
             .IsRequired();
 
-        builder.Property(x => x.UploadStatus)
-            .IsRequired();
-
         builder.Property(x => x.CreatedAtUtc)
             .IsRequired();
 

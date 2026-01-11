@@ -26,7 +26,7 @@ public partial class Add_Node : Migration
                 size = table.Column<long>(type: "bigint", nullable: false),
                 parent_id = table.Column<byte[]>(type: "bytea", nullable: true),
                 is_folder = table.Column<bool>(type: "boolean", nullable: false),
-                upload_status = table.Column<int>(type: "integer", nullable: false),
+                upload_status = table.Column<int>(type: "integer", nullable: true),
                 created_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                 last_modified_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
             },

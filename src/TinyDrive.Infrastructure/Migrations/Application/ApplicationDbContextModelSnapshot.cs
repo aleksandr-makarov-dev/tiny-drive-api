@@ -65,7 +65,7 @@ namespace TinyDrive.Infrastructure.Migrations.Application
                         .HasColumnType("bigint")
                         .HasColumnName("size");
 
-                    b.Property<int>("UploadStatus")
+                    b.Property<int?>("UploadStatus")
                         .HasColumnType("integer")
                         .HasColumnName("upload_status");
 
