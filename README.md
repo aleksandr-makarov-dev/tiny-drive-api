@@ -1,1 +1,1 @@
-[Tiny Drive Web Application (React)](https://github.com/aleksandr-makarov-dev/tiny-drive-api)
+[Tiny Drive Web Application](https://github.com/aleksandr-makarov-dev/tiny-drive-app)
