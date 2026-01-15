@@ -19,10 +19,15 @@ internal sealed class ConfirmFileUploadCommandHandler(
     {
         Node? file = await nodeRepository.FindByIdAsync(request.FileId, cancellationToken);
 
-        if (ValidateNode(file, request.FileId) is { IsFailure: true } nodeValidationResult)
+        if (file is null)
         {
-            return nodeValidationResult;
+            return Result.Failure(NodeErrors.NotFound(request.FileId));
         }
+
+        if (file.IsFolder)
+        {
+            return Result.Failure(NodeErrors.MustBeFile(file.Id));
+        } 
 
         if (file.UploadStatus == UploadStatus.Commited)
         {
@@ -34,9 +39,9 @@ internal sealed class ConfirmFileUploadCommandHandler(
             ObjectMetaData metaData =
                 await objectStorage.GetObjectMetaDataAsync(file.ObjectKey, cancellationToken: cancellationToken);
 
-            if (ValidateUploadedFile(file, metaData) is { IsFailure: true } uploadedFileValidationResult)
+            if (file.Size != metaData.ContentLength)
             {
-                return uploadedFileValidationResult;
+                return Result.Failure(ObjectStorageErrors.SizeMismatch(file.Size, metaData.ContentLength));
             }
 
             file.UploadStatus = UploadStatus.Commited;
@@ -50,41 +55,14 @@ internal sealed class ConfirmFileUploadCommandHandler(
         catch (Exception e)
         {
             file.UploadStatus = UploadStatus.Failed;
-            
+
             nodeRepository.Update(file);
-            
+
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             logger.LogError(e, "Failed to confirm file upload for {FileId}", request.FileId);
 
             return Result.Failure(ObjectStorageErrors.UploadMetadataNotFound(request.FileId));
         }
-    }
-
-    private static Result ValidateNode(Node? file, Ulid fileId)
-    {
-        if (file is null)
-        {
-            return Result.Failure(NodeErrors.NotFound(fileId));
-        }
-
-        return file.IsFolder ? Result.Failure(NodeErrors.MustBeFile(file.Id)) : Result.Success();
-    }
-
-    private static Result ValidateUploadedFile(Node file, ObjectMetaData metaData)
-    {
-        if (file.Size != metaData.ContentLength)
-        {
-            return Result.Failure(ObjectStorageErrors.SizeMismatch(file.Size, metaData.ContentLength));
-        }
-
-        if (!string.Equals(metaData.ContentType, file.ContentType, StringComparison.OrdinalIgnoreCase))
-        {
-            return Result.Failure(ObjectStorageErrors.ContentTypeMismatch(file.ContentType!, metaData.ContentType));
-        }
-
-        return metaData.LastModifiedAtUtc < file.CreatedAtUtc
-            ? Result.Failure(ObjectStorageErrors.InvalidUploadTime(file.Id))
-            : Result.Success();
     }
 }

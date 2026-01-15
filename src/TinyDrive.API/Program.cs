@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using TinyDrive.API.Extensions;
 using TinyDrive.API.Infrastructure;
@@ -19,7 +20,11 @@ builder.Services
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(static o => o.CustomSchemaIds(id => id.FullName!.Replace('+', '-')));
+builder.Services.AddSwaggerGen(static o =>
+{
+    o.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
+    o.MapType<Ulid>(() => new OpenApiSchema { Type = "string" });
+});
 
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

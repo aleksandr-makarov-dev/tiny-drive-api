@@ -1,4 +1,4 @@
-﻿namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
+﻿namespace TinyDrive.Application.Nodes.CreateFileUploadUrl;
 
 public sealed class FileUploadUrlResponse
 {

@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using TinyDrive.Application.Abstract;
 using TinyDrive.Application.Abstract.Data.Repositories;
-using TinyDrive.Domain.Abstract;
 using TinyDrive.Domain.Nodes;
 
 namespace TinyDrive.Application.Nodes.GetFolderItems;
@@ -11,12 +10,14 @@ internal sealed class GetFolderItemQueryHandler(
     INodeRepository nodeRepository,
     ILogger<GetFolderItemQueryHandler> logger
 )
-    : IRequestHandler<GetFolderItemsQuery, Result<PagedResult<FolderItemResponse>>>
+    : IRequestHandler<GetFolderItemsQuery, Result<GetFolderItemsPagedResult>>
 {
-    public async Task<Result<PagedResult<FolderItemResponse>>> Handle(GetFolderItemsQuery request,
+    public async Task<Result<GetFolderItemsPagedResult>> Handle(GetFolderItemsQuery request,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Retrieving folder items for {RequestParentId} folder.", request.ParentId);
+
+        Ulid? parentFolderId = null;
 
         if (request.ParentId is not null)
         {
@@ -26,7 +27,7 @@ internal sealed class GetFolderItemQueryHandler(
             {
                 logger.LogWarning("Parent node not found.");
 
-                return Result.Failure<PagedResult<FolderItemResponse>>(
+                return Result.Failure<GetFolderItemsPagedResult>(
                     NodeErrors.ParentNotFound(request.ParentId.Value));
             }
 
@@ -34,15 +35,18 @@ internal sealed class GetFolderItemQueryHandler(
             {
                 logger.LogWarning("Parent is not a folder.");
 
-                return Result.Failure<PagedResult<FolderItemResponse>>(
+                return Result.Failure<GetFolderItemsPagedResult>(
                     NodeErrors.ParentMustBeFolder(request.ParentId.Value));
             }
+
+            parentFolderId = parent.ParentId;
         }
 
         List<Node> items =
             await nodeRepository.FindAllByParentAsync(request.ParentId, cancellationToken: cancellationToken);
 
-        var pageResult = new PagedResult<FolderItemResponse>(items.Select(MapToFolderItemResponse).ToList());
+        var pageResult = new GetFolderItemsPagedResult(items.Select(MapToFolderItemResponse).ToList(),
+            ParentFolderId: parentFolderId);
 
         return Result.Success(pageResult);
     }

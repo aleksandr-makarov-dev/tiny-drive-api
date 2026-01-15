@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using TinyDrive.API.Extensions;
 using TinyDrive.API.Infrastructure;
 using TinyDrive.Application.Abstract;
-using TinyDrive.Application.Nodes.GetFileUploadUrl;
+using TinyDrive.Application.Nodes.CreateFileUploadUrl;
 
 namespace TinyDrive.API.Endpoints.Nodes;
 
-internal sealed class GetFileUploadUrlEndpoint : IEndpoint
+internal sealed class CreateFileUploadUrlEndpoint : IEndpoint
 {
     private sealed class Request
     {
@@ -24,7 +24,7 @@ internal sealed class GetFileUploadUrlEndpoint : IEndpoint
     {
         builder.MapPost("api/nodes/upload-url", async ([FromBody] Request request, ISender sender) =>
         {
-            var command = new GetFileUploadUrlCommand(
+            var command = new CreateFileUploadUrlCommand(
                 request.Name,
                 request.Size,
                 request.ContentType,

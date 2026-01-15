@@ -8,7 +8,7 @@ public sealed class FolderItemResponse
     
     public string? ContentType { get; init; }
     
-    public long? Size { get; init; }
+    public long Size { get; init; }
     
     public Ulid? ParentId { get; init; }
     

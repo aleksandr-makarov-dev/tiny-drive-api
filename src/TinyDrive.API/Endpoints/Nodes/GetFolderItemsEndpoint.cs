@@ -15,7 +15,7 @@ public class GetFolderItemsEndpoint : IEndpoint
         {
             var query = new GetFolderItemsQuery(parentId);
 
-            Result<PagedResult<FolderItemResponse>> result = await sender.Send(query);
+            Result<GetFolderItemsPagedResult> result = await sender.Send(query);
 
             return result.Match(Results.Ok, CustomResults.Problem);
         });

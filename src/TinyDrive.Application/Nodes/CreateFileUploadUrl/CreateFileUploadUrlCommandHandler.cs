@@ -5,21 +5,20 @@ using TinyDrive.Application.Abstract.Data;
 using TinyDrive.Application.Abstract.Data.Repositories;
 using TinyDrive.Application.Abstract.Storage;
 using TinyDrive.Application.Abstract.Storage.Models;
-using TinyDrive.Domain.Abstract;
 using TinyDrive.Domain.Nodes;
 
-namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
+namespace TinyDrive.Application.Nodes.CreateFileUploadUrl;
 
 internal sealed class
-    GetFileUploadUrlCommandHandler(
+    CreateFileUploadUrlCommandHandler(
         IUnitOfWork unitOfWork,
         INodeRepository nodeRepository,
         IDateTimeProvider dateTimeProvider,
         IObjectStorage objectStorage,
-        ILogger<GetFileUploadUrlCommandHandler> logger)
-    : IRequestHandler<GetFileUploadUrlCommand, Result<FileUploadUrlResponse>>
+        ILogger<CreateFileUploadUrlCommandHandler> logger)
+    : IRequestHandler<CreateFileUploadUrlCommand, Result<FileUploadUrlResponse>>
 {
-    public async Task<Result<FileUploadUrlResponse>> Handle(GetFileUploadUrlCommand request,
+    public async Task<Result<FileUploadUrlResponse>> Handle(CreateFileUploadUrlCommand request,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating upload url for file {FileName}.", request.Name);

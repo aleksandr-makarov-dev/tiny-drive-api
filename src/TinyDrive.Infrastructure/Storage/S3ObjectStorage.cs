@@ -56,9 +56,7 @@ internal sealed class S3ObjectStorage(
 
         return new ObjectMetaData
         {
-            ContentType = response.Headers.ContentType,
-            ContentLength = response.Headers.ContentLength,
-            LastModifiedAtUtc = response.LastModified
+            ContentLength = response.Headers.ContentLength
         };
     }
 }

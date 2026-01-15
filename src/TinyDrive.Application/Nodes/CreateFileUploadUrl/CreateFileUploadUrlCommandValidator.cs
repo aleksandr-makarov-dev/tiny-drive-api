@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 
-namespace TinyDrive.Application.Nodes.GetFileUploadUrl;
+namespace TinyDrive.Application.Nodes.CreateFileUploadUrl;
 
-internal sealed class GetFileUploadUrlCommandValidator : AbstractValidator<GetFileUploadUrlCommand>
+internal sealed class CreateFileUploadUrlCommandValidator : AbstractValidator<CreateFileUploadUrlCommand>
 {
     private const long MaxFileSize = 100 * 1024 * 1024;
 
-    public GetFileUploadUrlCommandValidator()
+    public CreateFileUploadUrlCommandValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
