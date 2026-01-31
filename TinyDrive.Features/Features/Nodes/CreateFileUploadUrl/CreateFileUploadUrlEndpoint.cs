@@ -3,9 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TinyDrive.Features.Common.Extensions;
 
-namespace TinyDrive.Features.Features.Nodes.CreateUploadUrl;
+namespace TinyDrive.Features.Features.Nodes.CreateFileUploadUrl;
 
-public sealed class CreateUploadUrlEndpoint : ICarterModule
+public sealed class CreateFileUploadUrlEndpoint : ICarterModule
 {
 
 	public void AddRoutes(IEndpointRouteBuilder app)
@@ -13,9 +13,9 @@ public sealed class CreateUploadUrlEndpoint : ICarterModule
 		app.MapPost("api/nodes/upload-url", HandleAsync);
 	}
 
-	private static async Task<IResult> HandleAsync([FromBody] CreateUploadUrlRequest request, ISender sender)
+	private static async Task<IResult> HandleAsync([FromBody] CreateFileUploadUrlRequest request, ISender sender)
 	{
-		var command = new CreateUploadUrlCommand(request.FileName, request.FileSizeBytes, request.ContentType,
+		var command = new CreateFileUploadUrlCommand(request.FileName, request.FileSizeBytes, request.ContentType,
 			request.ParentFolderId);
 
 		var result = await sender.Send(command);

@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using ErrorOr;
 using MediatR;
@@ -10,18 +9,19 @@ using TinyDrive.Features.Common.Constants;
 using TinyDrive.Features.Common.Errors;
 using TinyDrive.Infrastructure.Data;
 
-namespace TinyDrive.Features.Features.Nodes.CreateUploadUrl;
+namespace TinyDrive.Features.Features.Nodes.CreateFileUploadUrl;
 
-public sealed class CreateUploadUrlCommandHandler(
+public sealed class CreateFileUploadUrlCommandHandler(
 	ApplicationDbContext dbContext,
 	IAmazonS3 s3Client,
-	ILogger<CreateUploadUrlCommandHandler> logger)
-	: IRequestHandler<CreateUploadUrlCommand, ErrorOr<CreateUploadUrlResponse>>
+	ILogger<CreateFileUploadUrlCommandHandler> logger)
+	: IRequestHandler<CreateFileUploadUrlCommand, ErrorOr<CreateUploadUrlResponse>>
 {
 
-	public async Task<ErrorOr<CreateUploadUrlResponse>> Handle(CreateUploadUrlCommand request,
+	public async Task<ErrorOr<CreateUploadUrlResponse>> Handle(CreateFileUploadUrlCommand request,
 		CancellationToken cancellationToken)
 	{
+		// Check if Parent Folder exists
 		if (request.ParentFolderId.HasValue &&
 		    !await ParentFolderExistsAsync(request.ParentFolderId.Value, cancellationToken: cancellationToken))
 		{
@@ -31,6 +31,7 @@ public sealed class CreateUploadUrlCommandHandler(
 
 		var file = CreateFile(request.FileName, request.FileSizeBytes, request.ContentType, request.ParentFolderId);
 
+		// Check if file with the same Name and Extension exists in Parent Folder
 		if (await IsDuplicateFileAsync(file.Name, file.Extension!, file.ParentId, cancellationToken: cancellationToken))
 		{
 			logger.LogWarning(

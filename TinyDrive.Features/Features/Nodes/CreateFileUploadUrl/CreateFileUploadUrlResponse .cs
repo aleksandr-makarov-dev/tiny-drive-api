@@ -1,4 +1,4 @@
-﻿namespace TinyDrive.Features.Features.Nodes.CreateUploadUrl;
+﻿namespace TinyDrive.Features.Features.Nodes.CreateFileUploadUrl;
 
 public sealed record CreateUploadUrlResponse(
 	Guid FileId,
