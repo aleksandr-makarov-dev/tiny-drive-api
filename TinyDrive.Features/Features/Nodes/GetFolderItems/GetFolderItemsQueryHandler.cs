@@ -24,6 +24,8 @@ public sealed class GetFolderItemsQueryHandler(ApplicationDbContext dbContext)
 
 		return await dbContext.Nodes
 			.Where(x => x.ParentId == request.ParentId)
+			.OrderByDescending(x => x.IsFolder)
+			.ThenBy(x => x.Name)
 			.ProjectToFolderItems()
 			.PaginatedListAsync(request.PageNumber, request.PageSize, cancellationToken: cancellationToken);
 	}
