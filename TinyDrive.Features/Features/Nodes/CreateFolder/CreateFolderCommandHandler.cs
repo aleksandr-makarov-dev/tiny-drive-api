@@ -16,12 +16,12 @@ internal sealed class CreateFolderCommandHandler(ApplicationDbContext dbContext)
 		if (request.ParentFolderId.HasValue &&
 		    !await ParentFolderExistsAsync(request.ParentFolderId.Value, cancellationToken: cancellationToken))
 		{
-			return NodeErrors.ParentFolderNotFound();
+			return NodeErrors.ParentFolderNotFound(request.ParentFolderId.Value);
 		}
 
 		if (await IsDuplicateFolderAsync(request.Name, request.ParentFolderId, cancellationToken: cancellationToken))
 		{
-			return NodeErrors.FolderAlreadyExists();
+			return NodeErrors.FolderAlreadyExists(request.Name);
 		}
 
 		var folder = CreateFolder(request.Name, request.ParentFolderId);

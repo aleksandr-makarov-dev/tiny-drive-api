@@ -25,8 +25,8 @@ public sealed class CreateFileUploadUrlCommandHandler(
 		if (request.ParentFolderId.HasValue &&
 		    !await ParentFolderExistsAsync(request.ParentFolderId.Value, cancellationToken: cancellationToken))
 		{
-			logger.LogWarning("Parent folder with Id '{ParentId}' not found", request.ParentFolderId);
-			return NodeErrors.ParentFolderNotFound();
+			logger.LogWarning("Parent folder with id '{ParentId}' not found", request.ParentFolderId);
+			return NodeErrors.ParentFolderNotFound(request.ParentFolderId.Value);
 		}
 
 		var file = CreateFile(request.FileName, request.FileSizeBytes, request.ContentType, request.ParentFolderId);
@@ -37,7 +37,7 @@ public sealed class CreateFileUploadUrlCommandHandler(
 			logger.LogWarning(
 				"Duplicate file detected: '{FileName}' in folder '{ParentId}'", file.DisplayName, file.ParentId);
 
-			return NodeErrors.FileAlreadyExists();
+			return NodeErrors.FileAlreadyExists(file.Name);
 		}
 
 		var expiresAtUtc = DateTime.Now.Add(S3.PresignedUrlExpiration);
@@ -65,7 +65,7 @@ public sealed class CreateFileUploadUrlCommandHandler(
 		{
 			logger.LogError(ex, "An unexpected error occured during creating the upload url");
 
-			return NodeErrors.CreateUploadUrlFailure();
+			return NodeErrors.CreateUploadUrlFailed();
 		}
 	}
 

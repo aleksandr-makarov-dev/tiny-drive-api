@@ -19,7 +19,7 @@ public sealed class GetFolderItemsQueryHandler(ApplicationDbContext dbContext)
 		if (request.ParentId.HasValue &&
 		    !await ParentFolderExistsAsync(request.ParentId.Value, cancellationToken: cancellationToken))
 		{
-			return NodeErrors.ParentFolderNotFound();
+			return NodeErrors.ParentFolderNotFound(request.ParentId.Value);
 		}
 
 		return await dbContext.Nodes
