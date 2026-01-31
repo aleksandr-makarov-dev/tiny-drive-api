@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Remove="Meziantou.Analyzer" />
+    <PackageReference Include="Ardalis.GuardClauses" />
+    <PackageReference Include="EFCore.NamingConventions" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TinyDrive.Domain\TinyDrive.Domain.csproj" />
+  </ItemGroup>
+</Project>

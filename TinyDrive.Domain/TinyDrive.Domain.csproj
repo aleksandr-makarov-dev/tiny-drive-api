@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Remove="Meziantou.Analyzer" />
+      <PackageReference Include="ErrorOr" />
+      <PackageReference Include="MediatR.Contracts" />
+    </ItemGroup>
+
+</Project>
