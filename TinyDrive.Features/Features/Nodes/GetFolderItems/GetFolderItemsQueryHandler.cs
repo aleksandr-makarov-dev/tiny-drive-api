@@ -23,7 +23,7 @@ public sealed class GetFolderItemsQueryHandler(ApplicationDbContext dbContext)
 		}
 
 		return await dbContext.Nodes
-			.Where(x => x.ParentId == request.ParentId)
+			.Where(x => x.ParentId == request.ParentId && !x.IsDeleted)
 			.OrderByDescending(x => x.IsFolder)
 			.ThenBy(x => x.Name)
 			.ProjectToFolderItems()
