@@ -39,3 +39,5 @@ app.UseHttpsRedirection();
 app.MapCarter();
 
 await app.RunAsync();
+
+public abstract partial class Program;
