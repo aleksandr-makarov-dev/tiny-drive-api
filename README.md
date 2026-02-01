@@ -14,14 +14,7 @@ Tiny Drive is a backend service for a cloud file storage system, working on the 
 * **Swashbuckle / OpenAPI** — API documentation
 * **xUnit + Testcontainers** — integration and container-based testing
 * **SonarAnalyzer / Roslynator** — static code analysis and quality enforcement
-
-
-* **.NET 10 / ASP.NET Core**
-* **Entity Framework Core**
-* **Dependency injection / MediatR** (common in DDD and feature modular patterns)
-* **Docker / Compose** for containerized development and deployment
-* **xUnit / NUnit or a similar test framework** (for integration tests)
-
+  
 ## 🧱 Architecture & Components
 
 The repository contains the following main folders/projects: ([GitHub][1])
