@@ -1,6 +1,7 @@
 ﻿using Carter;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TinyDrive.Features.Common.Constants;
 using TinyDrive.Features.Common.Extensions;
 
 namespace TinyDrive.Features.Features.Nodes.GetFolderItems;
@@ -10,7 +11,8 @@ public sealed class GetFolderItemsEndpoint : ICarterModule
 
 	public void AddRoutes(IEndpointRouteBuilder app)
 	{
-		app.MapGet("api/nodes", HandleAsync);
+		app.MapGet("api/nodes", HandleAsync)
+			.WithTags(Tags.Nodes);
 	}
 
 	private static async Task<IResult> HandleAsync(ISender sender, [FromQuery] Guid? parentId,
