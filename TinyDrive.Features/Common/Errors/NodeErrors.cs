@@ -31,6 +31,9 @@ public static class NodeErrors
 		Error.Validation($"{Prefix}.CannotConfirmFailedUpload",
 			"The file cannot be confirmed because its upload previously failed.");
 
+	public static Error DeleteObjectFailed() =>
+		Error.Unexpected($"{Prefix}.DeleteObjectFailed", "Failed to delete object from storage.");
+
 	public static Error NodeNotFound(Guid fileId) =>
 		Error.NotFound($"{Prefix}.NodeNotFound", $"Node with ID '{fileId}' was not found.");
 }
