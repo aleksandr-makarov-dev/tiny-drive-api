@@ -17,8 +17,6 @@ Tiny Drive is a backend service for a cloud file storage system, working on the 
   
 ## 🧱 Architecture & Components
 
-The repository contains the following main folders/projects: ([GitHub][1])
-
 ### 1. **TinyDrive.Domain**
 
 * Defines core business models, entities, and domain logic.
