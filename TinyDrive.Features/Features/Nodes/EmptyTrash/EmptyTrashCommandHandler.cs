@@ -22,37 +22,27 @@ public sealed class EmptyTrashCommandHandler(
 
 		try
 		{
-			const int batchSize = 1000;
-
-			var files = nodes.Where(x => !x.IsFolder).ToList();
-
-			for (var i = 0; i < files.Count; i += batchSize)
+			var deleteObjectsRequest = new DeleteObjectsRequest
 			{
-				var batch = files.Skip(i).Take(batchSize).ToList();
+				BucketName = S3.BucketName,
+				Objects =
+				[
+					.. nodes.Where(x => !x.IsFolder).Select(x => new KeyVersion
+					{
+						Key = x.ObjectKey
+					})
+				]
+			};
 
-				var deleteObjectsRequest = new DeleteObjectsRequest
-				{
-					BucketName = S3.BucketName,
-					Objects =
-					[
-						.. batch.Select(x => new KeyVersion
-						{
-							Key = x.ObjectKey
-						})
-					]
-				};
+			var deleteObjectsResult =
+				await s3Client.DeleteObjectsAsync(deleteObjectsRequest, cancellationToken: cancellationToken);
 
-				var deleteObjectsResult =
-					await s3Client.DeleteObjectsAsync(deleteObjectsRequest, cancellationToken: cancellationToken);
-
-				if (deleteObjectsResult.DeleteErrors.Count != 0)
-				{
-					logger.LogWarning("Some objects are failed to be deleted.");
-				}
+			if (deleteObjectsResult.DeleteErrors?.Count != 0)
+			{
+				logger.LogWarning("Some objects are failed to be deleted.");
 			}
 
-
-			await dbContext.Nodes.Where(x => x.IsDeleted)
+			await dbContext.Nodes.IgnoreQueryFilters().Where(x => x.IsDeleted)
 				.ExecuteDeleteAsync(cancellationToken: cancellationToken);
 
 			return Result.Success;
