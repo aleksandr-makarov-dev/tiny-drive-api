@@ -20,10 +20,22 @@ internal static class EndpointResultsExtensions
 			_ => StatusCodes.Status500InternalServerError
 		};
 
-		return Results.ValidationProblem(errors.ToDictionary(k => k.Code, v => new[]
-			{
-				v.Description
-			}, StringComparer.Ordinal),
+		var title = errors[0].Type switch
+		{
+			ErrorType.Conflict => "Conflict: the request could not be completed.",
+			ErrorType.Validation => "One or more validation errors occurred.",
+			ErrorType.NotFound => "Requested resource(s) not found.",
+			ErrorType.Unauthorized => "Unauthorized: you do not have permission.",
+			_ => "An unknown error has occurred."
+		};
+
+		return Results.ValidationProblem(title: title,
+			errors: errors.ToDictionary(k => k.Code,
+				v =>
+					new[]
+					{
+						v.Description
+					}, StringComparer.Ordinal),
 			statusCode: statusCode);
 	}
 }
